@@ -1,0 +1,80 @@
+DROP SEQUENCE Person_seq ; 
+create sequence Person_seq 
+start with 100 
+increment by 1 
+nomaxvalue 
+;
+DROP TRIGGER Person_PK_trig 
+; 
+
+create or replace trigger Person_PK_trig 
+before insert on Person
+for each row 
+begin 
+select Person_seq.nextval into :new.person_id from dual; 
+end; 
+/
+
+DROP SEQUENCE dept_seq ; 
+create sequence dept_seq 
+start with 100 
+increment by 1 
+nomaxvalue 
+;
+DROP TRIGGER dept_PK_trig 
+; 
+
+create or replace trigger dept_PK_trig 
+before insert on dept
+for each row 
+begin 
+select dept_seq.nextval into :new.dept_id from dual; 
+end; 
+/
+
+DROP SEQUENCE p2p_seq ; 
+create sequence p2p_seq 
+start with 100 
+increment by 1 
+nomaxvalue 
+;
+DROP TRIGGER p2p_PK_trig 
+; 
+
+create or replace trigger p2p_PK_trig 
+before insert on p2p
+for each row 
+begin 
+select p2p_seq.nextval into :new.p2p_id from dual; 
+end; 
+/
+
+DROP SEQUENCE project_seq ; 
+create sequence project_seq 
+start with 100 
+increment by 1 
+nomaxvalue 
+;
+DROP TRIGGER project_PK_trig 
+; 
+
+create or replace trigger project_PK_trig 
+before insert on project
+for each row 
+begin 
+select project_seq.nextval into :new.project_id from dual; 
+end; 
+/
+
+DROP INDEX dept_dept_id_FK_0 ;
+CREATE INDEX dept_dept_id_FK_0 ON Person(dept_dept_id) ;
+DROP INDEX dept_dept_id1_FK_1 ;
+CREATE INDEX dept_dept_id1_FK_1 ON Person(dept_dept_id1) ;
+DROP INDEX Person_person_id_FK_2 ;
+CREATE INDEX Person_person_id_FK_2 ON dept(Person_person_id) ;
+DROP INDEX Person_person_id_FK_3 ;
+CREATE INDEX Person_person_id_FK_3 ON p2p(Person_person_id) ;
+DROP INDEX project_project_id_FK_4 ;
+CREATE INDEX project_project_id_FK_4 ON p2p(project_project_id) ;
+DROP INDEX dept_dept_id_FK_5 ;
+CREATE INDEX dept_dept_id_FK_5 ON project(dept_dept_id) ;

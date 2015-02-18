@@ -1,0 +1,172 @@
+DROP SEQUENCE Person_seq ; 
+create sequence Person_seq 
+start with 100 
+increment by 1 
+nomaxvalue 
+;
+
+create or replace trigger Person_PK_trig 
+before insert on Person
+for each row 
+begin 
+select Person_seq.nextval into :new.person_id from dual; 
+end; 
+/
+alter table Person add created date ; 
+alter table Person add created_by VARCHAR2 (255) ; 
+alter table Person add row_version_number integer ; 
+alter table Person add updated date ; 
+alter table Person add updated_by VARCHAR2 (255) ; 
+/
+create or replace trigger Person_AUD_trig 
+before insert or update on Person 
+for each row 
+begin 
+  if inserting then 
+    :new.created := localtimestamp; 
+    :new.created_by := nvl(wwv_flow.g_user,user); 
+    :new.updated := localtimestamp; 
+    :new.updated_by := nvl(wwv_flow.g_user,user); 
+    :new.row_version_number := 1; 
+  elsif updating then 
+    :new.row_version_number := nvl(:old.row_version_number,1) + 1; 
+  end if; 
+  if inserting or updating then 
+    :new.updated := localtimestamp; 
+    :new.updated_by := nvl(wwv_flow.g_user,user); 
+  end if; 
+end; 
+/
+
+DROP SEQUENCE dept_seq ; 
+create sequence dept_seq 
+start with 100 
+increment by 1 
+nomaxvalue 
+;
+
+create or replace trigger dept_PK_trig 
+before insert on dept
+for each row 
+begin 
+select dept_seq.nextval into :new.dept_id from dual; 
+end; 
+/
+alter table dept add created date ; 
+alter table dept add created_by VARCHAR2 (255) ; 
+alter table dept add row_version_number integer ; 
+alter table dept add updated date ; 
+alter table dept add updated_by VARCHAR2 (255) ; 
+/
+create or replace trigger dept_AUD_trig 
+before insert or update on dept 
+for each row 
+begin 
+  if inserting then 
+    :new.created := localtimestamp; 
+    :new.created_by := nvl(wwv_flow.g_user,user); 
+    :new.updated := localtimestamp; 
+    :new.updated_by := nvl(wwv_flow.g_user,user); 
+    :new.row_version_number := 1; 
+  elsif updating then 
+    :new.row_version_number := nvl(:old.row_version_number,1) + 1; 
+  end if; 
+  if inserting or updating then 
+    :new.updated := localtimestamp; 
+    :new.updated_by := nvl(wwv_flow.g_user,user); 
+  end if; 
+end; 
+/
+
+DROP SEQUENCE p2p_seq ; 
+create sequence p2p_seq 
+start with 100 
+increment by 1 
+nomaxvalue 
+;
+
+create or replace trigger p2p_PK_trig 
+before insert on p2p
+for each row 
+begin 
+select p2p_seq.nextval into :new.p2p_id from dual; 
+end; 
+/
+alter table p2p add created date ; 
+alter table p2p add created_by VARCHAR2 (255) ; 
+alter table p2p add row_version_number integer ; 
+alter table p2p add updated date ; 
+alter table p2p add updated_by VARCHAR2 (255) ; 
+/
+create or replace trigger p2p_AUD_trig 
+before insert or update on p2p 
+for each row 
+begin 
+  if inserting then 
+    :new.created := localtimestamp; 
+    :new.created_by := nvl(wwv_flow.g_user,user); 
+    :new.updated := localtimestamp; 
+    :new.updated_by := nvl(wwv_flow.g_user,user); 
+    :new.row_version_number := 1; 
+  elsif updating then 
+    :new.row_version_number := nvl(:old.row_version_number,1) + 1; 
+  end if; 
+  if inserting or updating then 
+    :new.updated := localtimestamp; 
+    :new.updated_by := nvl(wwv_flow.g_user,user); 
+  end if; 
+end; 
+/
+
+DROP SEQUENCE project_seq ; 
+create sequence project_seq 
+start with 100 
+increment by 1 
+nomaxvalue 
+;
+
+create or replace trigger project_PK_trig 
+before insert on project
+for each row 
+begin 
+select project_seq.nextval into :new.project_id from dual; 
+end; 
+/
+alter table project add created date ; 
+alter table project add created_by VARCHAR2 (255) ; 
+alter table project add row_version_number integer ; 
+alter table project add updated date ; 
+alter table project add updated_by VARCHAR2 (255) ; 
+/
+create or replace trigger project_AUD_trig 
+before insert or update on project 
+for each row 
+begin 
+  if inserting then 
+    :new.created := localtimestamp; 
+    :new.created_by := nvl(wwv_flow.g_user,user); 
+    :new.updated := localtimestamp; 
+    :new.updated_by := nvl(wwv_flow.g_user,user); 
+    :new.row_version_number := 1; 
+  elsif updating then 
+    :new.row_version_number := nvl(:old.row_version_number,1) + 1; 
+  end if; 
+  if inserting or updating then 
+    :new.updated := localtimestamp; 
+    :new.updated_by := nvl(wwv_flow.g_user,user); 
+  end if; 
+end; 
+/
+
+DROP INDEX dept_dept_id_FK_0 ;
+CREATE INDEX dept_dept_id_FK_0 ON Person(dept_dept_id) ;
+DROP INDEX dept_dept_id1_FK_1 ;
+CREATE INDEX dept_dept_id1_FK_1 ON Person(dept_dept_id1) ;
+DROP INDEX Person_person_id_FK_2 ;
+CREATE INDEX Person_person_id_FK_2 ON dept(Person_person_id) ;
+DROP INDEX Person_person_id_FK_3 ;
+CREATE INDEX Person_person_id_FK_3 ON p2p(Person_person_id) ;
+DROP INDEX project_project_id_FK_4 ;
+CREATE INDEX project_project_id_FK_4 ON p2p(project_project_id) ;
+DROP INDEX dept_dept_id_FK_5 ;
+CREATE INDEX dept_dept_id_FK_5 ON project(dept_dept_id) ;

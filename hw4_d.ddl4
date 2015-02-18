@@ -1,0 +1,43 @@
+drop view emp;
+drop view manager;
+
+create view emp as
+SELECT person_id, hire_date, salary, status 
+FROM Person ;
+
+create or replace TRIGGER emp_trigger
+     INSTEAD OF insert ON emp
+     FOR EACH ROW
+BEGIN
+     insert into Person(
+        person_id,
+        hire_date,
+        salary,
+        status)
+     VALUES (
+        :new.person_id,
+        :new.hire_date,
+        :new.salary,
+        :new.status) ;
+END;
+/
+
+
+create view manager as
+SELECT title, bonus, dept_id
+FROM Person ;
+
+create or replace TRIGGER manager_trigger
+     INSTEAD OF insert ON emp
+     FOR EACH ROW
+BEGIN
+     insert into Person(
+        title,
+        bonus
+        dept_id)
+     VALUES (
+        :new.title,
+        :new.bonus,
+        :new.dept_id) ;
+END;
+/
